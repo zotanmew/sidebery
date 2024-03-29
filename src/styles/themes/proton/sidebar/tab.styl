@@ -19,6 +19,8 @@
   --tabs-activated-shadow: var(--active-el-shadow)
   --tabs-color-layer-opacity: .2
   --tabs-activated-color-layer-opacity: .3
+  --tabs-discarded-favicon-opacity: .32
+  --tabs-discarded-title-opacity: .56
 #root[data-density="compact"]
   --tabs-pinned-height: 28px
   --tabs-pinned-width: 28px
@@ -98,10 +100,10 @@
     background-color: var(--frame-bg)
 
   &[data-discarded="true"] > .body > .fav
-    opacity: .32
+    opacity: var(--tabs-discarded-favicon-opacity)
   &[data-discarded="true"] > .body > .t-box
   &[data-discarded="true"] > .body > .ctx
-    opacity: .56
+    opacity: var(--tabs-discarded-title-opacity)
 
   &[data-pin="true"]
     width: var(--tabs-pinned-width)
