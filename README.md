@@ -96,7 +96,11 @@ Run browser with Add-on: `npm run dev.run -- <firefox-executable>`
 
 ## Donate
 
-You can donate to this project, which will motivate me to answer questions, fix reported bugs, implement requested features and generally will speed up development process. Thank you.
+You can donate (only crypto options) to this project, which will motivate me to answer questions, fix reported bugs, implement requested features and generally will speed up development process.
+
+You can also donate to resolving a specific issue (feature request or bug report). To do this, message me to [maxbadryzlov@gmail.com](mailto:maxbadryzlov@gmail.com), we discuss the issue and its possible resolution, and I'll spend my time on that issue after donation.
+
+Thank you.
 
 <details><summary><b> Bitcoin (BTC) </b></summary>
 
