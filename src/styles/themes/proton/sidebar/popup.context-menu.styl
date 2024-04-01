@@ -223,10 +223,13 @@
     overflow: hidden
     color: var(--color, var(--ctx-menu-fg))
     width: 100%
+    margin-left: var(--ctx-menu-text-opt-inner-gap)
     mask: linear-gradient(-90deg, transparent, #000000 12px, #000000)
     &.-header
       font-weight: 700
       padding: 2px 0
+  .icon-box + .label
+    margin-left: 0
 
 // Flag button
 .CtxMenu .flag-btn
