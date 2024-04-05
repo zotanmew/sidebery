@@ -87,6 +87,7 @@ export interface SettingsState {
   newTabCtxReopen: boolean
   tabWarmupOnHover: boolean
   tabSwitchDelay: number
+  forceDiscard: boolean
 
   // New tab position
   moveNewTabPin: (typeof SETTINGS_OPTIONS.moveNewTabPin)[number]

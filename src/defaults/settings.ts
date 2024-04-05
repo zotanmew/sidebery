@@ -88,6 +88,7 @@ export const DEFAULT_SETTINGS: SettingsState = {
   newTabCtxReopen: false,
   tabWarmupOnHover: true,
   tabSwitchDelay: 0,
+  forceDiscard: true,
 
   // New tab position
   moveNewTabPin: 'start',
