@@ -3539,9 +3539,9 @@ Például: „*”, „ctrl+$”, „ctrl+alt+g”`,
     hu: 'Elérési út és fájlnév',
   },
   'settings.snap_export_path_note': {
-    en: `Note: Path is relative to the downloads folder.
+    en: `Note: Path is relative to the downloads folder and Firefox doesn't allow to set path outside it.
 %Y - year; %M - month; %D - day; %h - hour; %m - minute; %s - second`,
-    ru: `Примечание: Путь указывается относительно папки загрузок.
+    ru: `Примечание: Путь указывается относительно папки загрузок и Firefox не позволяет устанавливать путь за ее пределами.
 %Y - год; %M - месяц; %D - день; %h - час; %m - минута; %s - секунда`,
     de: `Hinweis: Pfad ist relativ zum Download-Ordner.
 %Y - Jahr; %M - Monat; %D - Tag; %h - Stunde; %m - Minute; %s - Sekunde`,
