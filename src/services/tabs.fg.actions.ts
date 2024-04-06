@@ -1135,14 +1135,23 @@ export async function discardTabs(tabIds: ID[] = []): Promise<void> {
     }
   }
 
-  // Force discard for pages that prevent their own closing
-  if (Settings.state.forceDiscard && Permissions.allUrls) {
+  // Try to discard tabs
+  await browser.tabs.discard(tabIds).catch(err => {
+    Logs.err('Tabs.discardTabs: Cannot discard:', err)
+  })
+
+  // Find not discarded tabs that might prevent their closing
+  const secondTryIds = tabIds.filter(id => {
+    const tab = Tabs.byId[id]
+    return tab && !tab.discarded && tab.url.startsWith('h')
+  })
+
+  // Try to reset closing prevention and discard such tabs
+  if (Settings.state.forceDiscard && Permissions.allUrls && secondTryIds.length) {
     const forceDiscardInjection =
-      'window.onbeforeunload=null;window.addEventListener("beforeunload", e => {e.returnValue = ""})'
+      'window.onbeforeunload=null;window.addEventListener("beforeunload", e => {e.returnValue=""})'
     await Promise.allSettled(
-      tabIds.map(id => {
-        const tab = Tabs.byId[id]
-        if (!tab?.url.startsWith('h')) return
+      secondTryIds.map(id => {
         return browser.tabs.executeScript(id, {
           code: forceDiscardInjection,
           runAt: 'document_start',
@@ -1150,12 +1159,12 @@ export async function discardTabs(tabIds: ID[] = []): Promise<void> {
         })
       })
     )
-  }
 
-  // Try to discard tabs
-  return browser.tabs.discard(tabIds).catch(err => {
-    Logs.err('Tabs.discardTabs: Cannot discard:', err)
-  })
+    // Second try
+    await browser.tabs.discard(secondTryIds).catch(err => {
+      Logs.err('Tabs.discardTabs: Cannot discard (second try):', err)
+    })
+  }
 }
 
 /**
