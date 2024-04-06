@@ -16,6 +16,8 @@ export async function loadInShadowMode(): Promise<void> {
     Tabs.updateUrlCounter(tab.url, 1)
   }
 
+  Tabs.shadowReady = true
+
   // Call deferred event handlers
   if (Tabs.deferredEventHandling.length) {
     Logs.warn('Tabs: Deferred event handlers:', Tabs.deferredEventHandling.length)
@@ -31,6 +33,7 @@ export function unloadShadowed(): void {
   Tabs.urlsInUse = {}
   Tabs.list = []
   Tabs.shadowMode = false
+  Tabs.shadowReady = false
 }
 
 export function setupShadowListeners(): void {
@@ -57,7 +60,7 @@ export function resetShadowListeners(): void {
 
 function onShadowTabCreated(tab: browser.tabs.Tab): void {
   if (tab.windowId !== Windows.id) return
-  if (Tabs.list.length === 0) {
+  if (!Tabs.shadowReady) {
     Tabs.deferredEventHandling.push(() => onShadowTabCreated(tab))
     return
   }
@@ -79,7 +82,7 @@ function onShadowTabUpdated(
   tab: browser.tabs.Tab
 ): void {
   if (tab.windowId !== Windows.id) return
-  if (Tabs.list.length === 0) {
+  if (!Tabs.shadowReady) {
     Tabs.deferredEventHandling.push(() => onShadowTabUpdated(tabId, change, tab))
     return
   }
@@ -102,7 +105,7 @@ function onShadowTabUpdated(
 
 function onShadowTabRemoved(tabId: ID, info: browser.tabs.RemoveInfo): void {
   if (info.windowId !== Windows.id) return
-  if (Tabs.list.length === 0) {
+  if (!Tabs.shadowReady) {
     Tabs.deferredEventHandling.push(() => onShadowTabRemoved(tabId, info))
     return
   }
@@ -130,7 +133,7 @@ function onShadowTabRemoved(tabId: ID, info: browser.tabs.RemoveInfo): void {
 
 function onShadowTabMoved(id: ID, info: browser.tabs.MoveInfo): void {
   if (info.windowId !== Windows.id) return
-  if (Tabs.list.length === 0) {
+  if (!Tabs.shadowReady) {
     Tabs.deferredEventHandling.push(() => onShadowTabMoved(id, info))
     return
   }
@@ -145,7 +148,7 @@ function onShadowTabMoved(id: ID, info: browser.tabs.MoveInfo): void {
 
 function onShadowTabDetached(tabId: ID, info: browser.tabs.DetachInfo): void {
   if (info.oldWindowId !== Windows.id) return
-  if (Tabs.list.length === 0) {
+  if (!Tabs.shadowReady) {
     Tabs.deferredEventHandling.push(() => onShadowTabDetached(tabId, info))
     return
   }
@@ -154,7 +157,7 @@ function onShadowTabDetached(tabId: ID, info: browser.tabs.DetachInfo): void {
 
 async function onShadowTabAttached(tabId: ID, info: browser.tabs.AttachInfo): Promise<void> {
   if (info.newWindowId !== Windows.id) return
-  if (Tabs.list.length === 0) {
+  if (!Tabs.shadowReady) {
     Tabs.deferredEventHandling.push(() => onShadowTabAttached(tabId, info))
     return
   }
@@ -166,7 +169,7 @@ async function onShadowTabAttached(tabId: ID, info: browser.tabs.AttachInfo): Pr
 
 function onShadowTabActivated(info: browser.tabs.ActiveInfo): void {
   if (info.windowId !== Windows.id) return
-  if (Tabs.list.length === 0) {
+  if (!Tabs.shadowReady) {
     Tabs.deferredEventHandling.push(() => onShadowTabActivated(info))
     return
   }

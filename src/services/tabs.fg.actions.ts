@@ -201,6 +201,14 @@ export async function load(): Promise<void> {
   if (Settings.state.colorizeTabsBranches) Tabs.colorizeBranches()
 
   Tabs.ready = true
+
+  // Call deferred event handlers
+  if (Tabs.deferredEventHandling.length) {
+    Logs.warn('Tabs: Deferred event handlers:', Tabs.deferredEventHandling.length)
+  }
+  Tabs.deferredEventHandling.forEach(cb => cb())
+  Tabs.deferredEventHandling = []
+
   waitingForTabs.forEach(cb => cb())
   waitingForTabs = []
 
@@ -337,13 +345,6 @@ async function restoreTabsState(): Promise<void> {
     // Update succession
     Tabs.updateSuccessionDebounced(0)
   }
-
-  // Call deferred event handlers
-  if (Tabs.deferredEventHandling.length) {
-    Logs.warn('Tabs: Deferred event handlers:', Tabs.deferredEventHandling.length)
-  }
-  Tabs.deferredEventHandling.forEach(cb => cb())
-  Tabs.deferredEventHandling = []
 
   Logs.info(`Tabs.restoreTabsState: Done: ${performance.now() - ts}ms`)
 }

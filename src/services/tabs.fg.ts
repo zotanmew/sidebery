@@ -35,6 +35,7 @@ export const Tabs = {
 
   urlsInUse: {} as Record<string, number>,
   shadowMode: false,
+  shadowReady: false,
 
   tabsReinitializing: false,
   removedTabs: [] as RemovedTabInfo[],
