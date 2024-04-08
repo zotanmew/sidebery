@@ -270,11 +270,13 @@ async function restoreTabsState(): Promise<void> {
   const nativeTabs = Utils.settledOr(results[0], [])
   const storage = Utils.settledOr(results[1], {})
   const isWindowTabsLocked = Utils.settledOr(results[2], false)
+  let tabsWasMoved = false
 
   // Check if tabs are locked right now
   if (isWindowTabsLocked) {
     if (isWindowTabsLocked === true) throw Err.TabsLocked
-    storage.tabsDataCache = [isWindowTabsLocked]
+    storage.tabsDataCache = [isWindowTabsLocked.cache]
+    tabsWasMoved = isWindowTabsLocked.move
   }
 
   let tabs: Tab[] | undefined
@@ -344,6 +346,11 @@ async function restoreTabsState(): Promise<void> {
 
     // Update succession
     Tabs.updateSuccessionDebounced(0)
+  }
+
+  // Update group pages if tabs was moved to the new (this) window
+  if (tabsWasMoved) {
+    Tabs.list.forEach(t => t.isGroup && Tabs.updateGroupTab(t))
   }
 
   Logs.info(`Tabs.restoreTabsState: Done: ${performance.now() - ts}ms`)

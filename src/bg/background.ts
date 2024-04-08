@@ -37,6 +37,7 @@ void (async function main() {
     getGroupPageInitData: Tabs.getGroupPageInitData,
     tabsApiProxy: Tabs.tabsApiProxy,
     getSidebarTabs: Tabs.getSidebarTabs,
+    detachSidebarTabs: Tabs.detachSidebarTabs,
     openTabs: Tabs.openTabs,
     createSnapshot: Snapshots.createSnapshot,
     addSnapshot: Snapshots.addSnapshot,

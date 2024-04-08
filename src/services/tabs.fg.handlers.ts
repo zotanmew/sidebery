@@ -464,10 +464,11 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
     Tabs.deferredEventHandling.push(() => onTabUpdated(tabId, change, nativeTab))
     return
   }
+  if (Tabs.detachingTabIds.has(tabId)) return
 
   const tab = Tabs.byId[tabId]
   if (!tab) {
-    return Logs.warn(`Tabs.onTabUpdated: Cannot find local tab: ${tabId}`)
+    return Logs.warn(`Tabs.onTabUpdated: Cannot find local tab: ${tabId}`, Object.keys(change))
   }
 
   // Discarded
@@ -924,7 +925,7 @@ function onTabRemoved(tabId: ID, info: browser.tabs.RemoveInfo, detached?: boole
       if (t.lvl <= tab.lvl) break
 
       // Tab will be detached, so skip handling it
-      if (detached && Tabs.detachingTabIds.indexOf(t.id) !== -1) continue
+      if (detached && Tabs.detachingTabIds.has(t.id)) continue
 
       if (t.parentId === tab.id && !detached) {
         rememberChildTabs(t.id, tab.id)
@@ -1103,6 +1104,7 @@ function onTabRemoved(tabId: ID, info: browser.tabs.RemoveInfo, detached?: boole
     })
   }
 
+  // Update group page info
   const groupTab = Tabs.getGroupTab(tab)
   if (groupTab && !groupTab.discarded) {
     IPC.groupPage(groupTab.id, { removedTab: tab.id })
@@ -1124,6 +1126,7 @@ function onTabMoved(id: ID, info: browser.tabs.MoveInfo): void {
   }
   if (Tabs.ignoreTabsEvents) return
   if (Tabs.tabsReinitializing) return Tabs.reinitTabs()
+  if (Tabs.detachingTabIds.has(id)) return
 
   const tab = Tabs.byId[id]
   if (!tab) {
@@ -1252,7 +1255,12 @@ function onTabDetached(id: ID, info: browser.tabs.DetachInfo): void {
   if (Tabs.ignoreTabsEvents) return
   if (Tabs.tabsReinitializing) return Tabs.reinitTabs()
 
-  // Logs.info('Tabs.onTabDetached', id, info)
+  // Ignore this event if the tab is in `Tabs.detachingTabIds`
+  // because it's already handled by Sidebery
+  if (Tabs.detachingTabIds.has(id)) {
+    Tabs.detachingTabIds.delete(id)
+    return
+  }
 
   const tab = Tabs.byId[id]
   if (tab) {
@@ -1260,14 +1268,7 @@ function onTabDetached(id: ID, info: browser.tabs.DetachInfo): void {
     tab.reactive.folded = false
   }
 
-  const di = Tabs.detachingTabIds.indexOf(id)
-  if (di !== -1) Tabs.detachingTabIds.splice(di, 1)
-
   onTabRemoved(id, { windowId: Windows.id, isWindowClosing: false }, true)
-
-  if (Tabs.detachingTabIds.length === 0 && Settings.state.hideFoldedTabs) {
-    Tabs.updateNativeTabsVisibility()
-  }
 }
 
 /**
@@ -1283,18 +1284,17 @@ async function onTabAttached(id: ID, info: browser.tabs.AttachInfo): Promise<voi
   if (Tabs.ignoreTabsEvents) return
   if (Tabs.tabsReinitializing) return Tabs.reinitTabs()
 
-  // Logs.info('Tabs.onTabAttached', id, info)
-
+  // Ignore this event if the tab is in `Tabs.attachingTabs`
+  // because it's already handled by Sidebery
   const ai = Tabs.attachingTabs.findIndex(t => t.id === id)
-
-  let tab
   if (ai > -1) {
-    tab = Tabs.attachingTabs.splice(ai, 1)[0]
-  } else {
-    deferredActivationHandling.id = id
-    const nativeTab = await browser.tabs.get(id)
-    tab = Tabs.mutateNativeTabToSideberyTab(nativeTab)
+    Tabs.attachingTabs.splice(ai, 1)
+    return
   }
+
+  deferredActivationHandling.id = id
+  const nativeTab = await browser.tabs.get(id)
+  const tab = Tabs.mutateNativeTabToSideberyTab(nativeTab)
 
   tab.windowId = Windows.id
   tab.index = info.newPosition
@@ -1336,7 +1336,7 @@ function onTabActivated(info: browser.tabs.ActiveInfo): void {
   if (Tabs.ignoreTabsEvents) return
   if (Tabs.tabsReinitializing) return Tabs.reinitTabs()
 
-  // Logs.info('Tabs.onTabActivated', info.tabId, Tabs.detachingTabIds.length)
+  // Logs.info('Tabs.onTabActivated', info.tabId)
 
   // Reset selection
   if (!DnD.reactive.isStarted) Selection.resetSelection()

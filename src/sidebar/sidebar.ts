@@ -39,6 +39,7 @@ async function main(): Promise<void> {
     reloadTab: Tabs.reloadTab,
     queryTab: Tabs.queryTab,
     getTabs: Tabs.getTabs,
+    detachTabs: Tabs.detachTabs,
     getTabsTreeData: Tabs.getTabsTreeData,
     moveTabsToThisWin: Tabs.moveToThisWin,
     openTabs: Tabs.open,

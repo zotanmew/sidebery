@@ -8,6 +8,7 @@ import * as Favicons from 'src/services/favicons.bg'
 import { WebReq } from 'src/services/web-req'
 import { Windows } from 'src/services/windows'
 import { Store } from 'src/services/storage'
+import { DetachedTabsInfo } from 'src/services/tabs.fg.move'
 
 export const enum InstanceType {
   unknown = -1,
@@ -45,6 +46,7 @@ export type BgActions = {
   getGroupPageInitData: typeof Tabs.getGroupPageInitData
   tabsApiProxy: typeof Tabs.tabsApiProxy
   getSidebarTabs: typeof Tabs.getSidebarTabs
+  detachSidebarTabs: typeof Tabs.detachSidebarTabs
   openTabs: typeof Tabs.openTabs
   createSnapshot: typeof Snapshots.createSnapshot
   addSnapshot: typeof Snapshots.addSnapshot
@@ -70,6 +72,7 @@ export type SidebarActions = {
   reloadTab: (tab: Tab) => void
   queryTab: (props: Partial<Tab>) => Tab | null
   getTabs: (tabIds?: ID[]) => Tab[] | undefined
+  detachTabs: (tabIds: ID[]) => DetachedTabsInfo | undefined
   getTabsTreeData: () => TabsTreeData
   getActivePanelConfig: () => PanelConfig | undefined
   stopDrag: () => void

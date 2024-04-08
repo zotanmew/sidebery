@@ -13,6 +13,7 @@ import * as IPC from './ipc'
 import { Settings } from './settings'
 import * as Logs from './logs'
 import { ParsedTheme, Styles } from './styles'
+import { DetachedTabsInfo } from './tabs.fg.move'
 
 /**
  * Load tabs
@@ -660,6 +661,19 @@ export async function getSidebarTabs(windowId: ID, tabIds?: ID[]): Promise<Tab[]
   }
 
   return IPC.sidebar(windowId, 'getTabs', tabIds)
+}
+
+export async function detachSidebarTabs(
+  windowId: ID,
+  tabIds: ID[]
+): Promise<DetachedTabsInfo | undefined> {
+  const con = IPC.getConnection(InstanceType.sidebar, windowId)
+  if (!con) return
+  if ((!con.localPort || con.localPort.error) && (!con.remotePort || con.remotePort.error)) {
+    return
+  }
+
+  return IPC.sidebar(windowId, 'detachTabs', tabIds)
 }
 
 export async function openTabs(items: ItemInfo[], dst: DstPlaceInfo) {

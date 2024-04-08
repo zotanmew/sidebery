@@ -42,7 +42,7 @@ export const Tabs = {
   newTabsPosition: {} as Record<number, NewTabPosition>,
   movingTabs: [] as ID[],
   attachingTabs: [] as Tab[],
-  detachingTabIds: [] as ID[],
+  detachingTabIds: new Set<ID>(),
   normTabsMoving: false,
   editableTabId: NOID,
 

@@ -118,8 +118,8 @@ export function closeWindowsPopup(): void {
   Windows.reactive.choosingTitle = ''
 }
 
-const lockedWindowsTabs: Record<ID, boolean | TabCache[]> = {}
-export function isWindowTabsLocked(id: ID): boolean | TabCache[] {
+const lockedWindowsTabs: Record<ID, boolean | { move: boolean; cache: TabCache[] }> = {}
+export function isWindowTabsLocked(id: ID): boolean | { move: boolean; cache: TabCache[] } {
   Logs.info('Windows.isWindowTabsLocked', id)
   return lockedWindowsTabs[id] ?? false
 }
@@ -168,7 +168,8 @@ export async function createWithTabs(
   if (!window.id || !window.tabs?.length) return true
   lockedWindowsTabs[window.id] = true
 
-  const firstTabId = window.tabs[0]?.id
+  const initialTabId = window.tabs[0]?.id
+  let activeTabId = NOID
 
   // Process the tabs
   const processingTabs: Promise<browser.tabs.Tab | browser.tabs.Tab[]>[] = []
@@ -176,7 +177,10 @@ export async function createWithTabs(
   for (const info of tabsInfo) {
     // Move
     if (moveTabs) {
+      // TODO: Try to call it once with array of ids
       processingTabs.push(browser.tabs.move(info.id, { index: index++, windowId: window.id }))
+
+      if (info.active) activeTabId = info.id
     }
 
     // Create
@@ -232,6 +236,7 @@ export async function createWithTabs(
     if (srcInfo.customTitle) cachedData.customTitle = srcInfo.customTitle
     if (srcInfo.customColor) cachedData.customColor = srcInfo.customColor
     if (srcInfo.pinned) cachedData.pin = true
+    if (srcInfo.folded) cachedData.folded = true
     cache.push(cachedData)
 
     // Save tabs data
@@ -239,7 +244,7 @@ export async function createWithTabs(
       id: tab.id,
       panelId: srcInfo.panelId ?? NOID,
       parentId: tab.parentId ?? NOID,
-      folded: false,
+      folded: !!srcInfo.folded,
     }
     if (srcInfo.customTitle) sessionData.customTitle = srcInfo.customTitle
     if (srcInfo.customColor) sessionData.customColor = srcInfo.customColor
@@ -252,13 +257,22 @@ export async function createWithTabs(
 
   Tabs.cacheTabsData(window.id, cache, 0)
 
+  // Update succession for the initial tab
+  const firstTab = createdTabs[0]
+  if (firstTab && moveTabs) {
+    if (activeTabId === NOID) activeTabId = firstTab.id
+    await browser.tabs.moveInSuccession([initialTabId], activeTabId).catch(err => {
+      Logs.err('Windows.createWithTabs: Cannot update succession for initial tab:', err)
+    })
+  }
+
   try {
-    await browser.tabs.remove(firstTabId)
+    await browser.tabs.remove(initialTabId)
   } catch (err) {
     Logs.err('Windows.createWithTabs: Cannot remove initial tab:', err)
   }
 
-  lockedWindowsTabs[window.id] = cache
+  lockedWindowsTabs[window.id] = { move: moveTabs, cache }
 
   setTimeout(() => {
     if (window.id !== undefined) delete lockedWindowsTabs[window.id]
