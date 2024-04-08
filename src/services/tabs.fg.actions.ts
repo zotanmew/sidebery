@@ -2445,6 +2445,7 @@ export function getTabsInfo(ids: ID[], setPanelId?: boolean): ItemInfo[] {
         pinned: tab.pinned,
         container: tab.cookieStoreId,
       }
+      if (tab.folded) info.folded = true
       if (tab.customTitle) info.customTitle = tab.customTitle
       if (tab.customColor) info.customColor = tab.customColor
       if (setPanelId) info.panelId = tab.panelId
@@ -2466,6 +2467,7 @@ export function getTabsInfo(ids: ID[], setPanelId?: boolean): ItemInfo[] {
             pinned: child.pinned,
             container: child.cookieStoreId,
           }
+          if (child.folded) subInfo.folded = true
           if (setPanelId) subInfo.panelId = child.panelId
           items.push(subInfo)
         }
