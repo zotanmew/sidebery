@@ -178,6 +178,11 @@ function onGroupMsg(msg: GroupMsg) {
     if (titleEl) titleEl.value = normTitle
     window.location.hash = `#${encodeURIComponent(normTitle)}`
   }
+  if (msg.windowId !== undefined) {
+    groupWinId = msg.windowId
+    IPC.setWinId(groupWinId)
+    Logs.setWinId(groupWinId)
+  }
 
   if (msg.tabs !== undefined) {
     for (i = 0; i < msg.tabs.length; i++) {

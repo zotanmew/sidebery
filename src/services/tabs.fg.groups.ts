@@ -280,6 +280,7 @@ export function updateGroupTab(groupTab: Tab) {
 
   const msg: GroupMsg = {
     index: groupTab.index,
+    windowId: Windows.id,
     parentId: groupTab.parentId,
     tabs,
     len,
