@@ -489,7 +489,7 @@ export function createGroupUrl(name?: string, conf?: GroupConfig): string {
 /**
  * Clone Array
  */
-export function cloneArray<T>(arr: T[]): T[] {
+export function cloneArray<T>(arr: readonly T[]): T[] {
   const out: T[] = []
   for (const item of arr) {
     if (Array.isArray(item)) {
