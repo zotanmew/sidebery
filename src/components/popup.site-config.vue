@@ -189,19 +189,17 @@ function findExistedRules() {
   const prevFoundReopenRule = foundReopenRule
   const prevFoundMoveRule = foundMoveRule
   const activeOption = matchOptions.value?.find(opt => opt.active)
-  let hostName = activeOption?.name
 
-  if (hostName && activeOption?.id !== 'custom') {
-    const urlExample = `https://${hostName}`
+  if (activeOption && activeOption.id !== 'custom' && activeOption.name) {
+    const urlExample = `https://${activeOption.name}`
 
     foundReopenRule = findReopenRule(urlExample)
     foundMoveRule = findMoveToPanelRule(urlExample)
-    existedRules.value = true
   } else {
     foundReopenRule = undefined
     foundMoveRule = undefined
-    existedRules.value = false
   }
+  existedRules.value = !!foundReopenRule || !!foundMoveRule
 
   if (foundReopenRule) reopenInContainerId.value = foundReopenRule.container.id
   else if (prevFoundReopenRule) reopenInContainerId.value = 'none'
@@ -331,12 +329,14 @@ function onSave(): void {
   }
 
   // Remove moving rule
-  if (foundMoveRule && foundMoveRule.panel.id !== mPanel?.id) {
+  if (foundMoveRule) {
     const panel = foundMoveRule.panel
     const rule = foundMoveRule.rule
     const index = panel.moveRules.findIndex(r => r.id === rule.id)
-    if (index !== -1) panel.moveRules.splice(index, 1)
-    savePanels = true
+    if (index !== -1) {
+      panel.moveRules.splice(index, 1)
+      savePanels = true
+    }
   }
 
   // Create new reopening rule
