@@ -88,7 +88,7 @@ const matchTextField = ref(false)
 const matchString = ref('')
 const reopenInContainerId = ref('none')
 const moveToPanelId = ref<ID>('none')
-const moveToPanelTopLvlOnly = ref(true)
+const moveToPanelTopLvlOnly = ref(false)
 const existedRules = ref(false)
 
 const saveBtnActive = computed<boolean>(() => {
@@ -210,7 +210,7 @@ function findExistedRules() {
     moveToPanelTopLvlOnly.value = !!foundMoveRule.rule.topLvlOnly
   } else if (prevFoundMoveRule) {
     moveToPanelId.value = 'none'
-    moveToPanelTopLvlOnly.value = true
+    moveToPanelTopLvlOnly.value = false
   }
 }
 

@@ -103,7 +103,7 @@ const rules = ref<MoveRulePreview[]>([])
 const newRuleName = ref('')
 const newRuleContainerId = ref('none')
 const newRuleURL = ref('')
-const newRuleTopLvl = ref(true)
+const newRuleTopLvl = ref(false)
 const editing = ref<ID | null>(null)
 
 const addBtnActive = computed<boolean>(() => {
