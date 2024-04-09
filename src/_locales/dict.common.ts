@@ -2140,8 +2140,10 @@ export const commonTranslations: Translations = {
     de: 'Sidebery kann das Upgrade nicht abschließen. Versuchen Sie, die alte Version von Sidebery manuell zu entfernen, den Browser neu zu laden und die neue Version von Sidebery zu installieren.',
     hu: 'Nem sikerült befejezni a frissítést. Meg kell próbálni eltávolítani a Sidebery korábbi verzióját, majd a böngésző újraindítása után telepíteni az új verziót.',
     ru: 'Sidebery не может завершить обновление. Попробуйте вручную удалить старую версию Sidebery, перезагрузить браузер и установить новую версию Sidebery.',
-    zh_CN: 'Sidebery 无法完成升级。请尝试手动删除旧版本的 Sidebery，重新加载浏览器并安装新版本的 Sidebery。',
-    zh_TW: 'Sidebery 無法完成升級。請嘗試手動刪除舊版本的 Sidebery，重新開啟瀏覽器並安裝新版本的 Sidebery。',
+    zh_CN:
+      'Sidebery 无法完成升级。请尝试手动删除旧版本的 Sidebery，重新加载浏览器并安装新版本的 Sidebery。',
+    zh_TW:
+      'Sidebery 無法完成升級。請嘗試手動刪除舊版本的 Sidebery，重新開啟瀏覽器並安裝新版本的 Sidebery。',
   },
   'upgrade.done': {
     en: 'Sidebery successfully upgraded',

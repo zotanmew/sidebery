@@ -104,8 +104,10 @@ export const setupPageTranslations: Translations = {
     de: 'Tabs mit passender URL in dieser Umgebung neu öffnen.\nNewline Getrennte Liste von "Substrings" oder "/regex/":\n    example.com\n    /^(some)?regex$/\n    ...',
     hu: 'Az illeszkedő URL-ek újranyitása ebben a konténerben.\nSoronként egy-egy "szövegrészlet" vagy /RegExp/:\n    pelda.hu\n    /^(szabályos)?kifejezés$/\n    …',
     ru: 'Переоткрывать вкладки с совпадающими url в этом контейнере.\nПострочный список правил "substrings" или "/regex/":\n    example.com\n    /^(some)?regex$/\n    ...',
-    zh_CN: '在此容器中重新打开匹配此URL列表的标签页。\n以换行符分隔的 字符串 或 /正则表达式/ 列表：\n    example.com\n    /^(some)?regex$/\n    ...',
-    zh_TW: '在此容器中重新開啟具有符合 URL 的分頁。\n以換行符分隔的 字符串 或 /正規表示式/ 列表：\n    example.com\n    /^(some)?regex$/\n    ...',
+    zh_CN:
+      '在此容器中重新打开匹配此URL列表的标签页。\n以换行符分隔的 字符串 或 /正则表达式/ 列表：\n    example.com\n    /^(some)?regex$/\n    ...',
+    zh_TW:
+      '在此容器中重新開啟具有符合 URL 的分頁。\n以換行符分隔的 字符串 或 /正規表示式/ 列表：\n    example.com\n    /^(some)?regex$/\n    ...',
   },
   'container.rules_exclude': {
     en: 'Exclude URLs',
@@ -120,8 +122,10 @@ export const setupPageTranslations: Translations = {
     de: 'Tabs mit passender URL in Standardumgebung neu öffnen.\nNewline Getrennte Liste von "Substrings" oder "/regex/":\n    example.com\n    /^(some)?regex$/\n    ...',
     hu: 'Az illeszkedő URL-ek újranyitása az alapértelmezett konténerben.\nSoronként egy-egy "szövegrészlet" vagy /RegExp/:\n    pelda.hu\n    /^(szabályos)?kifejezés$/\n    …',
     ru: 'Переоткрывать вкладки с совпадающими url из этого контейнера в стандартном.\nПострочный список правил "substrings" или "/regex/":\n    example.com\n    /^(some)?regex$/\n    ...',
-    zh_CN: '在默认容器中重新打开匹配此URL列表的标签页。\n以换行符分隔的 字符串 或 /正则表达式/ 列表：\n    example.com\n    /^(some)?regex$/\n    ...',
-    zh_TW: '在預設容器中重新開啟具有符合 URL 的分頁。\n以換行符分隔的 字符串 或 /正規表示式/ 列表：\n    example.com\n    /^(some)?regex$/\n    ...',
+    zh_CN:
+      '在默认容器中重新打开匹配此URL列表的标签页。\n以换行符分隔的 字符串 或 /正则表达式/ 列表：\n    example.com\n    /^(some)?regex$/\n    ...',
+    zh_TW:
+      '在預設容器中重新開啟具有符合 URL 的分頁。\n以換行符分隔的 字符串 或 /正規表示式/ 列表：\n    example.com\n    /^(some)?regex$/\n    ...',
   },
   'container.user_agent': {
     en: 'User Agent',
@@ -955,8 +959,10 @@ export const setupPageTranslations: Translations = {
     de: 'Benötigt für:\n- Cookies löschen\n- Proxy und URL Regeln für Umgebungen\n- Screenshots für die Gruppenseite und Fensterauswahl-Panel\n- User-Agent per Umgebung ändern',
     hu: 'A következő funkciókhoz szükséges:\n– Sütik törlése\n– A konténerek proxy- és URL-szabályainak beállítása\n– Képernyőképek a csoportoldalhoz és az ablakválasztóhoz\n– Konténerenkénti böngészőazonosító megadása',
     ru: 'Необходимо для:\n- Удаления cookies\n- Прокси и url-правил контейнеров\n- Скриншотов на групповой странице и на панели выбора окна',
-    zh_CN: '用于：\n- 清除 Cookie\n- 容器的代理和 URL 规则\n- 分组页面和窗口选择面板的缩略图\n- 更改每个容器的用户代理',
-    zh_TW: '用於：\n- 清除 Cookie\n- 容器的代理和 URL 規則\n- 群組頁面和視窗選取面板的縮圖\n- 更改每個容器的使用者代理',
+    zh_CN:
+      '用于：\n- 清除 Cookie\n- 容器的代理和 URL 规则\n- 分组页面和窗口选择面板的缩略图\n- 更改每个容器的用户代理',
+    zh_TW:
+      '用於：\n- 清除 Cookie\n- 容器的代理和 URL 規則\n- 群組頁面和視窗選取面板的縮圖\n- 更改每個容器的使用者代理',
   },
   'settings.perm.bookmarks_label': {
     en: 'Bookmarks:',
@@ -3241,8 +3247,10 @@ Például: „*”, „ctrl+$”, „ctrl+alt+g”`,
     de: '- Um Theme-Farbe auf Sidebery-Schaltflächen in Browseroberfläche anzuwenden, setze "svg.context-properties.content.enabled" auf "true" auf about:config Seite.',
     hu: 'A gombokra vonatkozó témaszínek alkalmazásához a böngésző about:config lapján az „svg.context-properties.content.enabled” beállításnak „true” értéket kell adni.',
     ru: '- Чтобы применить цвет темы к кнопкам Sidebery в интерфейсе браузера, установите «svg.context-properties.content.enabled» в «true» на странице about:config.',
-    zh_CN: '- 为了将主题颜色应用于浏览器界面的 Sidebery 按钮，需要在 about:config 页面中设置 "svg.context-properties.content.enabled" 的值为 "true".',
-    zh_TW: '- 要將主題顏色應用於瀏覽器界面中的 Sidebery 按鈕，請在 about:config 頁面中將 "svg.context-properties.content.enabled" 設定為 "true"。',
+    zh_CN:
+      '- 为了将主题颜色应用于浏览器界面的 Sidebery 按钮，需要在 about:config 页面中设置 "svg.context-properties.content.enabled" 的值为 "true".',
+    zh_TW:
+      '- 要將主題顏色應用於瀏覽器界面中的 Sidebery 按鈕，請在 about:config 頁面中將 "svg.context-properties.content.enabled" 設定為 "true"。',
   },
   'settings.edit_styles': {
     en: 'Edit styles',
@@ -4536,6 +4544,22 @@ Például: „*”, „ctrl+$”, „ctrl+alt+g”`,
     zh_CN: '复制开发工具 URL',
     zh_TW: '複製開發者工具 URL',
   },
+  'settings.repo_bug': {
+    en: 'Report a bug',
+    ru: 'Сообщить об ошибке',
+    de: 'Einen Bug melden',
+    zh_CN: '报告错误',
+    zh_TW: '報告錯誤',
+    hu: 'Hibajelentés',
+  },
+  'settings.repo_feature': {
+    en: 'Suggest a feature',
+    ru: 'Предложить новую функцию',
+    de: 'Ein Feature vorschlagen',
+    zh_CN: '功能建议',
+    zh_TW: '功能建議',
+    hu: 'Új funkció javaslata',
+  },
   'settings.reload_addon': {
     en: 'Reload add-on',
     de: 'Add-on neu laden',
@@ -4779,8 +4803,10 @@ Például: „*”, „ctrl+$”, „ctrl+alt+g”`,
     de: '- Aktiviere ausgewählten Tab\n- Öffne ausgewähltes Lesezeichen\n- Klappe aktiven Tab-Zweig oder ausgewählten Lesezeichen-Ordner ein/aus\n- Aktiviere ausgewählte Kontextmenü-Option\n- Aktiviere ausgewähltes Panel',
     hu: '– A kijelölt lap aktiválása\n– A kijelölt könyvjelző megnyitása\n– Az aktív lap ágának vagy a kijelölt könyvjelzőmappának a becsukása/kinyitása\n– A környezeti menü kijelölt elemének aktiválása\n– A kijelölt panel aktiválása',
     ru: '- активировать выделенную вкладку\n- открыть выделенную закладку\n- свернуть/развернуть ветку активной вкладки или выделенную папку закладок\n- активировать выделенный пункт контекстного меню\n- активировать выделенную панель',
-    zh_CN: '- 激活选定的标签页\n- 打开选定的书签\n- 折叠/展开活动标签页分支或选定的书签文件夹\n- 激活选定的上下文菜单选项\n- 激活选定的面板',
-    zh_TW: '- 啟動選定的分頁\n- 開啟選定的書籤\n- 折疊/展開當前分頁分支或選定的書籤資料夾\n- 啟動選定的快捷選單選項\n- 啟動選定的面板',
+    zh_CN:
+      '- 激活选定的标签页\n- 打开选定的书签\n- 折叠/展开活动标签页分支或选定的书签文件夹\n- 激活选定的上下文菜单选项\n- 激活选定的面板',
+    zh_TW:
+      '- 啟動選定的分頁\n- 開啟選定的書籤\n- 折疊/展開當前分頁分支或選定的書籤資料夾\n- 啟動選定的快捷選單選項\n- 啟動選定的面板',
   },
   'settings.kb_unloading_tabs': {
     en: 'Unload tabs',
