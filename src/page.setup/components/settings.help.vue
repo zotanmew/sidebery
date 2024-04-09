@@ -10,11 +10,9 @@ section(ref="el")
     .btn(@click="showDbgDetails()") {{translate('settings.debug_info')}}
     a.btn(@click="SetupPage.copyDevtoolsUrl()") {{translate('settings.copy_devtools_url')}}
     a.btn(
-      v-if="LANG === 'en'"
       tabindex="-1"
       href="https://github.com/mbnuqw/sidebery/issues/new?template=Bug_report.md") {{translate('settings.repo_bug')}}
     a.btn(
-      v-if="LANG === 'en'"
       tabindex="-1"
       href="https://github.com/mbnuqw/sidebery/issues/new?template=Feature_request.md") {{translate('settings.repo_feature')}}
   .ctrls
