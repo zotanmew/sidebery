@@ -116,6 +116,16 @@ export async function sleep(ms = 1000): Promise<void> {
 }
 
 /**
+ * Deadline
+ */
+export function deadline<T>(deadline: number, fallback: T, promise: Promise<T>): Promise<T> {
+  return new Promise((ok, meh) => {
+    setTimeout(() => ok(fallback), deadline)
+    promise.then(ok).catch(meh)
+  })
+}
+
+/**
  * Bytes to readable string
  */
 export function bytesToStr(bytes: number): string {

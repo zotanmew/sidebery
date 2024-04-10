@@ -1211,11 +1211,17 @@ export async function onDragEnd(e: DragEvent): Promise<void> {
     // Check if the drop event was consumed by another sidebar
     const requestingDropStatus: Promise<boolean>[] = []
     for (const win of Windows.otherWindows) {
-      if (win.id) requestingDropStatus.push(IPC.sidebar(win.id, 'isDropEventConsumed'))
+      if (win.id) {
+        const gettingStatus = browser.sidebarAction.isOpen({ windowId: win.id }).then(isOpen => {
+          if (isOpen && win.id) return IPC.sidebar(win.id, 'isDropEventConsumed')
+          else return false
+        })
+        requestingDropStatus.push(gettingStatus)
+      }
     }
     let consumed
     try {
-      consumed = await Promise.all(requestingDropStatus)
+      consumed = await Utils.deadline(1500, [], Promise.all(requestingDropStatus))
     } catch (err) {
       Logs.err('DnD.onDragEnd: Cannot get drop status from other windows', err)
       return
