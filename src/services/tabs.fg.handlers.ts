@@ -620,7 +620,7 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
           const ok = Settings.state.tabsUpdateMarkFirst
             ? !URL_HOST_PATH_RE.test(nativeTab.title)
             : !URL_HOST_PATH_RE.test(tab.title) && !URL_HOST_PATH_RE.test(nativeTab.title)
-          if (ok) {
+          if (ok && !tab.discarded) {
             const panel = Sidebar.panelsById[tab.panelId]
             tab.updated = true
             tab.reactive.updated = true
