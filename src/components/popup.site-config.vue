@@ -61,6 +61,7 @@ import * as Popups from 'src/services/popups'
 import { Tabs } from 'src/services/tabs.fg'
 import { Windows } from 'src/services/windows'
 import { Permissions } from 'src/services/permissions'
+import { Settings } from 'src/services/settings'
 
 interface Option {
   value: string
@@ -385,6 +386,10 @@ function onSave(): void {
       const items = Tabs.getTabsInfo([tab.id])
       const src = { windowId: Windows.id, panelId: tab.panelId, pinned: tab.pinned }
       Tabs.move(items, src, { panelId: mPanel.id, index: mPanel.nextTabIndex })
+
+      if (tab.active && Settings.state.tabsPanelSwitchActMoveAuto) {
+        Sidebar.switchToPanel(mPanel.id, true, true)
+      }
     }
   }
 
