@@ -496,6 +496,14 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
       if (mediaStateChanged) {
         Sidebar.updateMediaStateOfPanelDebounced(100, tab.panelId, tab)
       }
+      if (tab.updated) {
+        tab.reactive.updated = tab.updated = false
+        const panel = Sidebar.panelsById[tab.panelId]
+        if (Utils.isTabsPanel(panel) && panel.updatedTabs.length) {
+          Utils.rmFromArray(panel.updatedTabs, tab.id)
+          panel.reactive.updated = panel.updatedTabs.length > 0
+        }
+      }
       const groupTab = Tabs.getGroupTab(tab)
       if (groupTab && !groupTab.discarded) Tabs.updateGroupChild(groupTab.id, nativeTab.id)
 
