@@ -52,8 +52,8 @@
       .child-count(v-if="tab.reactive.folded && tab.reactive.branchLen") {{tab.reactive.branchLen}}
     .audio(
       v-if="tab.reactive.mediaAudible || tab.reactive.mediaMuted || tab.reactive.mediaPaused"
-      @mousedown.stop.prevent=""
-      @mouseup.stop="onAudioMouseDown($event, tab)")
+      @mousedown.stop.prevent="onAudioMouseDown($event, tab)"
+      @mouseup.stop="onAudioMouseUp($event, tab)")
       svg.audio-icon.-loud: use(xlink:href="#icon_loud_badge")
       svg.audio-icon.-mute: use(xlink:href="#icon_mute_badge")
       svg.audio-icon.-pause: use(xlink:href="#icon_pause_12")
@@ -517,6 +517,14 @@ function onMouseLeave(): void {
 }
 
 function onAudioMouseDown(e: MouseEvent, tab: Tab): void {
+  Mouse.setTarget('tab.audio', tab.id)
+}
+
+function onAudioMouseUp(e: MouseEvent, tab: Tab) {
+  const sameTarget = Mouse.isTarget('tab.audio', tab.id)
+  Mouse.resetTarget()
+  if (!sameTarget) return
+
   // Left button
   if (e.button === 0) {
     if (!tab.mediaPaused) Tabs.remuteTabs([tab.id])
