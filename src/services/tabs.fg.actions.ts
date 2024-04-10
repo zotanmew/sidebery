@@ -1254,7 +1254,7 @@ export function repinTabs(tabIds: ID[]): void {
  * Duplicate tabs
  */
 export async function duplicateTabs(tabIds: ID[], asChild?: boolean): Promise<void> {
-  const active = tabIds.length === 1
+  let active = tabIds.length === 1
 
   // Sort tab ids
   Tabs.sortTabIds(tabIds)
@@ -1305,6 +1305,7 @@ export async function duplicateTabs(tabIds: ID[], asChild?: boolean): Promise<vo
 
     const oldNewIds: Record<ID, ID> = {}
     Tabs.setNewTabPosition(index, asChild ? tab.id : tab.parentId, dstPanelId)
+    if (active && tab.discarded) active = false
     const dupTab = await browser.tabs.duplicate(tabId, { active, index })
     oldNewIds[tabId] = dupTab.id
 
@@ -1312,7 +1313,8 @@ export async function duplicateTabs(tabIds: ID[], asChild?: boolean): Promise<vo
       index++
       const dupDescendantParentId = oldNewIds[descendantParentId]
       Tabs.setNewTabPosition(index, dupDescendantParentId, dstPanelId)
-      const dupDescendantTab = await browser.tabs.duplicate(descendantTabId, { active, index })
+      const dupOpts = { active: false, index }
+      const dupDescendantTab = await browser.tabs.duplicate(descendantTabId, dupOpts)
       oldNewIds[descendantTabId] = dupDescendantTab.id
     }
   }
