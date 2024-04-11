@@ -4,6 +4,7 @@
 
 ### Added
 
+- Tabs: make discarded tab opacity editable (by [@valadaptive](https://github.com/valadaptive): [#1553](https://github.com/mbnuqw/sidebery/issues/1553))
 - Hungarian translation (by [@cr04ch](https://github.com/cr04ch): [#1531](https://github.com/mbnuqw/sidebery/issues/1531))  
 - Sidebar: close site config popup with ESC ([#491](https://github.com/mbnuqw/sidebery/issues/491))  
 - SetupPage: sub-sections of tabs and mouse settings in navigation
@@ -12,6 +13,25 @@
 
 ### Fixed
 
+- Dnd: incorrect checking of consumed drop event in other sidebars ([#1554](https://github.com/mbnuqw/sidebery/issues/1554))  
+- Tab: audio badge: correctly handle click target ([#1283](https://github.com/mbnuqw/sidebery/issues/1283))  
+- Bottom-bar: increase click area to the bottom edge
+- onTabUpdated: reset `updated` flag on discard
+- onTabUpdated: don't set `updated` flag for discarded tab
+- Site config popup: switch the panel after moving tab if configured
+- Setup-page: help: repo link URL (by [@llc0930](https://github.com/llc0930): [#1580](https://github.com/mbnuqw/sidebery/issues/1580))
+- Site config popup: changes are not saved correctly
+- Auto move rule: set default value of 'top lvl only' to false
+- Translation fixes (by [@llc0930](https://github.com/llc0930): [#1578](https://github.com/mbnuqw/sidebery/issues/1578))  
+- Broken tree state after drag and drop to another window in some cases
+- Discarded tabs reload on moving the last tabs to another window
+- The last tab activation on moving tabs to the new window
+- Tabs: incorrect state checking in event handlers ([#1230](https://github.com/mbnuqw/sidebery/issues/1230))  
+- Horizontal scroll-bar appeared in sub-menu in the plain theme
+- Discard page even if it's trying to prevent closing (only with WebData permissions)
+- Context menu: too small margin-left of the label without icon
+- L10n zh_TW correction (by [@llc0930](https://github.com/llc0930): [#1537](https://github.com/mbnuqw/sidebery/issues/1537))
+- Default settings: nativeHighlight: true ([#748](https://github.com/mbnuqw/sidebery/issues/748))  
 - Broken active group page on restoring window from history menu
 - Context menu positioned under the cursor in some cases ([#522](https://github.com/mbnuqw/sidebery/issues/522))  
 - Tabs: reset unread mark after disabling the setting
