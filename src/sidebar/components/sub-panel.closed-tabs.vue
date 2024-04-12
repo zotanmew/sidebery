@@ -6,7 +6,7 @@
         v-for="rmt in Tabs.recentlyRemoved"
         :id="'rmt' + rmt.id"
         :key="rmt.id"
-        :title="rmt.url"
+        :title="`${rmt.title}\n---\n${rmt.url}`"
         :data-lvl="rmt.lvl"
         :data-parent="rmt.isParent"
         draggable="true"
