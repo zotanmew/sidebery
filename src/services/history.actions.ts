@@ -472,7 +472,9 @@ export async function copyUrls(ids: ID[]): Promise<void> {
 
   let urls = ''
   for (const id of ids) {
-    const visit = History.visits.find(i => i.id === id)
+    let visit
+    if (History.filtered?.length) visit = History.filtered.find(i => i.id === id)
+    if (!visit) visit = History.visits.find(i => i.id === id)
     if (visit && visit.url) urls += '\n' + visit.url
   }
 
@@ -488,7 +490,9 @@ export async function copyTitles(ids: ID[]): Promise<void> {
 
   let titles = ''
   for (const id of ids) {
-    const visit = History.visits.find(i => i.id === id)
+    let visit
+    if (History.filtered?.length) visit = History.filtered.find(i => i.id === id)
+    if (!visit) visit = History.visits.find(i => i.id === id)
     if (visit && visit.title) titles += '\n' + visit.title
   }
 
