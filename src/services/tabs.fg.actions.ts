@@ -2487,16 +2487,16 @@ export function getTabsInfo(ids: ID[], setPanelId?: boolean): ItemInfo[] {
   return items
 }
 
-export function getBranch(tab: Tab, withRoot = true): Tab[] {
+export function getBranch(rootTab: Tab, withRoot = true): Tab[] {
   const result: Tab[] = []
-  if (withRoot) result.push(tab)
+  if (withRoot) result.push(rootTab)
 
   // Check tab index
-  const target = Tabs.list[tab.index]
-  if (!target || target.id !== tab.id) return result
+  const target = Tabs.list[rootTab.index]
+  if (!target || target.id !== rootTab.id) return result
 
-  const rootLvl = tab.lvl
-  let index = tab.index + 1
+  const rootLvl = rootTab.lvl
+  let index = rootTab.index + 1
   let child: Tab | undefined = Tabs.list[index++]
   while (child && child.lvl > rootLvl) {
     result.push(child)
