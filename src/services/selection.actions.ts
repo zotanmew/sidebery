@@ -233,6 +233,7 @@ export function selectBookmarksRange(aBookmark: Bookmark, bBookmark?: Bookmark):
       if (inside) {
         bkm.sel = true
         Selection.selected.push(bound.id)
+        if (aBookmark.id === bBookmark.id) break
       }
     }
   }
