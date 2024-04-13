@@ -512,15 +512,24 @@ function onKeySelectExpand(dir: number): void {
 
   let target: ItemBounds | undefined
 
-  // No selected items -> select first/last
+  // No selected items: Find selection start
   if (!Selection.isSet()) {
-    // From start / end
-    if (dir > 0) {
-      target = activePanel.bounds[0]
-      Selection.select(target.id)
-    } else {
-      target = activePanel.bounds[activePanel.bounds.length - 1]
-      Selection.select(target.id)
+    const actTab = Tabs.byId[Tabs.activeId]
+    // Active tab
+    if (actTab && actTab.panelId === Sidebar.activePanelId && Utils.isTabsPanel(activePanel)) {
+      target = activePanel.bounds.find(b => b.id === Tabs.activeId)
+      if (target) Selection.selectTab(target.id)
+    }
+
+    // or first / last element
+    if (!target) {
+      if (dir > 0) {
+        target = activePanel.bounds[0]
+        Selection.select(target.id)
+      } else {
+        target = activePanel.bounds[activePanel.bounds.length - 1]
+        Selection.select(target.id)
+      }
     }
   }
 
