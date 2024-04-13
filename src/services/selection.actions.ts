@@ -119,8 +119,7 @@ export function selectTabsRange(aTab: Tab, bTab?: Tab): void {
   if (Selection.selected.length) {
     for (const id of Selection.selected) {
       const tab = Tabs.byId[id]
-      if (tab) tab.reactive.sel = false
-      // TODO: check why I didn't change non-reactive value
+      if (tab) tab.reactive.sel = tab.sel = false
     }
     Selection.selected = []
   }
