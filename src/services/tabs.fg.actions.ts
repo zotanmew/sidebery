@@ -1889,14 +1889,6 @@ export function flattenTabs(tabIds: ID[]): void {
   cacheTabsData()
 }
 
-let updateTabsTreeTimeout: number | undefined
-export function updateTabsTreeDebounced(startIndex = 0, endIndex = -1, delay = 150): void {
-  clearTimeout(updateTabsTreeTimeout)
-  updateTabsTreeTimeout = setTimeout(() => {
-    updateTabsTree(startIndex, endIndex)
-  }, delay)
-}
-
 /**
  * Calculates tree props
  *
