@@ -689,6 +689,8 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
 
   // Handle unpinned tab
   if (change.pinned !== undefined && !change.pinned) {
+    Tabs.cacheTabsData(640)
+
     let panel
     if (Settings.state.pinnedTabsPosition === 'panel') {
       panel = Sidebar.panelsById[tab.panelId]
@@ -733,6 +735,8 @@ function onTabUpdated(tabId: ID, change: browser.tabs.ChangeInfo, nativeTab: Nat
 
   // Handle pinned tab
   if (change.pinned !== undefined && change.pinned) {
+    Tabs.cacheTabsData(640)
+
     const prevPanelId = tab.prevPanelId
     const panelId = tab.panelId
 
