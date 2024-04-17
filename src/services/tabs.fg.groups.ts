@@ -45,7 +45,6 @@ export function linkGroupWithPinnedTab(groupTab: Tab, tabs: Tab[]): void {
  */
 export async function replaceRelGroupWithPinnedTab(groupTab: Tab, pinnedTab: Tab): Promise<void> {
   await browser.tabs.move(pinnedTab.id, { index: groupTab.index - 1 })
-  Utils.sleep(120)
 
   groupTab.parentId = pinnedTab.id
   Tabs.updateTabsTree()
