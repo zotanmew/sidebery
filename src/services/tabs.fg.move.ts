@@ -486,9 +486,6 @@ export async function moveToThisWin(
   Sidebar.recalcTabsPanels()
   if (!probeTab.pinned) Sidebar.recalcVisibleTabs(panel.id)
 
-  // Save new tabs cache
-  Tabs.cacheTabsData()
-
   // Remove updated flag
   if (Utils.isTabsPanel(panel) && panel.updatedTabs.length) {
     panel.updatedTabs = panel.updatedTabs.filter(id => !tabIds.includes(id))
