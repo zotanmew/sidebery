@@ -543,6 +543,7 @@ export function detachTabs(tabIds: ID[]): DetachedTabsInfo | undefined {
   const detachedTabs: Tab[] = []
   const panel = Sidebar.panelsById[probeTab.panelId]
   const tabsLen = Tabs.list.length
+  const toSave: ID[] = []
   let updMediaBadges = false
 
   for (let i = tabIds.length; i--; ) {
@@ -550,8 +551,21 @@ export function detachTabs(tabIds: ID[]): DetachedTabsInfo | undefined {
     const tab = Tabs.byId[id]
     if (!tab) continue
 
+    // Update parentId of untouched child tabs
+    if (tab.isParent && !tabIds.includes(tab.parentId)) {
+      const branch = Tabs.getBranch(tab, false)
+      for (const ct of branch) {
+        if (ct.parentId === tab.id && !tabIds.includes(ct.id)) {
+          ct.parentId = tab.parentId
+          toSave.push(ct.id)
+        }
+      }
+    }
+
+    // Prepend to output array
     detachedTabs.unshift(Utils.cloneObject(tab))
 
+    // Remove from local state
     delete Tabs.byId[id]
     Tabs.list.splice(tab.index, 1)
 
@@ -590,6 +604,7 @@ export function detachTabs(tabIds: ID[]): DetachedTabsInfo | undefined {
   Tabs.updateTabsTree()
   Sidebar.recalcTabsPanels()
   if (!probeTab.pinned) Sidebar.recalcVisibleTabs(panel.id)
+  if (toSave.length) toSave.forEach(id => Tabs.saveTabData(id))
 
   // Remove updated flag
   if (Utils.isTabsPanel(panel) && panel.updatedTabs.length) {
