@@ -1,5 +1,5 @@
 import { DstPlaceInfo, ItemInfo, PanelType, SrcPlaceInfo, Tab } from 'src/types'
-import { WindowChoosingDetails, TabToPanelMoveRule, TabToPanelMoveRuleConfig } from 'src/types'
+import { TabToPanelMoveRule, TabToPanelMoveRuleConfig } from 'src/types'
 import { DEFAULT_CONTAINER_ID, MOVEID, NEWID, NOID } from 'src/defaults'
 import { Sidebar } from 'src/services/sidebar'
 import { Tabs } from 'src/services/tabs.fg'
