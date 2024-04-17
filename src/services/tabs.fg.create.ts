@@ -303,6 +303,7 @@ export async function reopen(
 
   // Fix tree
   let treeUpdateNeeded = false
+  const toSave: Tab[] = []
   for (const oldId of Object.keys(treeUpdate)) {
     const children = treeUpdate[oldId]
     const newId = idsMap[oldId]
@@ -311,10 +312,14 @@ export async function reopen(
     if (!treeUpdateNeeded) treeUpdateNeeded = true
     for (const childId of children) {
       const childTab = Tabs.byId[childId]
-      if (childTab) childTab.parentId = newId
+      if (childTab) {
+        childTab.parentId = newId
+        toSave.push(childTab)
+      }
     }
   }
   if (treeUpdateNeeded) Tabs.updateTabsTree(minIndex, maxIndex + 1)
+  if (toSave.length) toSave.forEach(t => Tabs.saveTabData(t.id))
 }
 
 export async function open(
