@@ -562,6 +562,16 @@ export function detachTabs(tabIds: ID[]): DetachedTabsInfo | undefined {
       }
     }
 
+    // Update parentId of detached tabs
+    if (tab.parentId !== NOID && !tabIds.includes(tab.parentId)) {
+      let parent = Tabs.byId[tab.parentId]
+      while (parent) {
+        if (tabIds.includes(parent.parentId)) break
+        parent = Tabs.byId[parent.parentId]
+      }
+      tab.parentId = parent ? parent.parentId : NOID
+    }
+
     // Prepend to output array
     detachedTabs.unshift(Utils.cloneObject(tab))
 
