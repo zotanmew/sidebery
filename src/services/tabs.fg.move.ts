@@ -493,7 +493,7 @@ export async function moveToThisWin(
   }
 
   // Save new tabs data / cache
-  tabs.forEach(tab => Tabs.saveTabData(tab.id))
+  tabs.forEach(tab => Tabs.saveTabData(tab.id, true))
   Tabs.cacheTabsData()
 
   // Update succession

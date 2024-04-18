@@ -598,7 +598,7 @@ let cacheTabsDataTimeout: number | undefined
 /**
  * Save tab data to its session storage
  */
-export function saveTabData(tabId: ID): void {
+export function saveTabData(tabId: ID, forced?: boolean): void {
   // Logs.info('Tabs.saveTabData', tabId)
   const tab = Tabs.byId[tabId]
   if (!tab) return
@@ -606,6 +606,7 @@ export function saveTabData(tabId: ID): void {
   let data = tab.sessionData
   if (data) {
     if (
+      !forced &&
       data.parentId === tab.parentId &&
       data.folded === tab.folded &&
       data.panelId === tab.panelId &&
