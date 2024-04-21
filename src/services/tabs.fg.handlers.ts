@@ -926,7 +926,10 @@ function onTabRemoved(tabId: ID, info: browser.tabs.RemoveInfo, detached?: boole
         newTab.isParent = tab.isParent
         newTab.reactive.isParent = tab.isParent
         Tabs.forEachDescendant(tab, t => {
-          if (t.parentId === tab.id) t.parentId = newTab.id
+          if (t.parentId === tab.id) {
+            t.parentId = newTab.id
+            Tabs.saveTabData(t.id)
+          }
         })
         break handling_descendants
       }
