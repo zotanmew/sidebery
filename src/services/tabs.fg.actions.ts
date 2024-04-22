@@ -363,7 +363,6 @@ function restoreTabsFromCache(
 ): Tab[] {
   Logs.info('Tabs.restoreTabsFromCache')
 
-  let logWrongPanels: Record<string, null> | undefined
   const firstPanelId = lastPanel.id
   const idsMap: Record<ID, ID> = {}
   const tabs: Tab[] = []
@@ -393,8 +392,6 @@ function restoreTabsFromCache(
     // Normalize panelId
     const panel = Sidebar.panelsById[tab.panelId]
     if (!panel) {
-      if (!logWrongPanels) logWrongPanels = {}
-      logWrongPanels[tab.panelId] = null
       tab.panelId = lastPanel.id
     } else {
       if (!tab.pinned) {
@@ -414,10 +411,6 @@ function restoreTabsFromCache(
     tabs.push(tab)
   }
 
-  if (logWrongPanels) {
-    Logs.warn('Tabs loading: Cannot find panels: ' + Object.keys(logWrongPanels).join(' '))
-  }
-
   return tabs
 }
 
@@ -428,7 +421,6 @@ function restoreTabsFromSessionData(
 ): Tab[] {
   Logs.info('Tabs.restoreTabsFromSessionData')
 
-  let logWrongPanels: Record<string, null> | undefined
   const firstPanelId = lastPanel.id
   const idsMap: Record<ID, ID> = {}
   const tabs: Tab[] = []
@@ -462,17 +454,7 @@ function restoreTabsFromSessionData(
 
     // Normalize panelId
     const panel = Sidebar.panelsById[tab.panelId]
-    if (!panel) {
-      if (!logWrongPanels) logWrongPanels = {}
-      logWrongPanels[tab.panelId] = null
-      tab.panelId = lastPanel.id
-    } else {
-      if (!tab.pinned) {
-        // Check order of panels
-        if (panel.index < lastPanel.index) tab.panelId = lastPanel.id
-        else lastPanel = panel
-      }
-    }
+    if (!panel) tab.panelId = lastPanel.id
 
     // Use openerTabId as fallback for parentId
     if (tab.parentId === -1 && tab.openerTabId !== undefined && Tabs.byId[tab.openerTabId]) {
@@ -484,8 +466,28 @@ function restoreTabsFromSessionData(
     tabs.push(tab)
   }
 
-  if (logWrongPanels) {
-    Logs.warn('Tabs loading: Cannot find panels: ' + Object.keys(logWrongPanels).join(' '))
+  let lastPanelIndex = -1
+  for (const panel of Sidebar.panels) {
+    if (!Utils.isTabsPanel(panel)) continue
+
+    let prevTabIndex = -1
+    for (let ti = 0; ti < tabs.length; ti++) {
+      const tab = tabs[ti]
+      if (tab.pinned) continue
+
+      if (tab.panelId !== panel.id) continue
+
+      if (tab.index <= lastPanelIndex || (prevTabIndex !== -1 && tab.index - 1 !== prevTabIndex)) {
+        let prevTab = tabs[ti - 1] as Tab | undefined
+        if (prevTab?.pinned) prevTab = undefined
+        tab.panelId = prevTab?.panelId ?? firstPanelId
+        continue
+      }
+
+      prevTabIndex = tab.index
+    }
+
+    lastPanelIndex = prevTabIndex
   }
 
   return tabs
