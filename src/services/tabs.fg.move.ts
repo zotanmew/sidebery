@@ -757,7 +757,9 @@ export function moveByRule(tabId: ID, delay: number) {
 
     const currentPanel = Sidebar.panelsById[tab.panelId]
     let excludeTo = NOID
-    if (Utils.isTabsPanel(currentPanel)) excludeTo = currentPanel.moveExcludedTo
+    if (Utils.isTabsPanel(currentPanel) && currentPanel.moveRules.length > 0) {
+      excludeTo = currentPanel.moveExcludedTo
+    }
 
     const rule = Tabs.findMoveRule(tab)
     if (rule) {
