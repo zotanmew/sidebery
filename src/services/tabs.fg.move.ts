@@ -162,7 +162,8 @@ export async function move(
   const oneAfterAnother = tabs.every((tab, ix) => ix === 0 || tab.index === tabs[ix - 1].index + 1)
   const srcIndex = tabs[0].index
 
-  const ids = []
+  const ids = tabs.map(t => t.id)
+  const orphansToSave: ID[] = []
   let dstIndexIncluded = -1
   let prevIndex = 0
   let panelIsChanged = false
@@ -171,6 +172,18 @@ export async function move(
   let mediaPrevPanelId
   let srcPanelId
   for (const tab of tabs) {
+    // Update parentId of orphans
+    if (tab.isParent && !ids.includes(tab.parentId)) {
+      const branch = Tabs.getBranch(tab, false)
+      for (const child of branch) {
+        if (ids.includes(child.id) || !ids.includes(child.parentId)) continue
+        child.parentId = tab.parentId
+        orphansToSave.push(child.id)
+        if (tab.parentId !== NOID) browser.tabs.update(child.id, { openerTabId: tab.parentId })
+        else browser.tabs.update(child.id, { openerTabId: child.id })
+      }
+    }
+
     // Cut tab from old index in sidebery list
     const index = Tabs.list.indexOf(tab, prevIndex)
     if (index === -1) continue
@@ -179,7 +192,6 @@ export async function move(
     if (tab.active) isActive = true
 
     prevIndex = index
-    ids.push(tab.id)
 
     // Get dstIndex if target tab included in moving tabs list
     if (dstTab && dstTab.id === tab.id) dstIndexIncluded = index
@@ -267,6 +279,7 @@ export async function move(
   if (dstParent?.isGroup) Tabs.updateGroupTab(dstParent)
 
   tabs.forEach(t => Tabs.saveTabData(t.id))
+  orphansToSave.forEach(id => Tabs.saveTabData(id))
   Tabs.cacheTabsData()
 
   // Mark moving tabs
